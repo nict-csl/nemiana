@@ -1,0 +1,9 @@
+*.lst
+*.bin
+*.dump
+*.elf
+*.hex
+*.img
+*.srec
+*.o
+*.log

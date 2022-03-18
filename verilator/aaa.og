@@ -1,0 +1,75 @@
+verilator -CFLAGS -g -y mycore/poyo-v -top-module cpu -cc cpu.v --exe iana_server.cpp iana_cpu.cpp
+make -C obj_dir -f Vcpu.mk
+make[1]: Entering directory '/root/src/verilator/obj_dir'
+ccache g++  -I.  -MMD -I/usr/local/share/verilator/include -I/usr/local/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-shadow     -g  -std=gnu++14 -Os -c -o iana_cpu.o ../iana_cpu.cpp
+../iana_cpu.cpp: In member function 'void IanaCPU::resume()':
+../iana_cpu.cpp:130:10: error: 'class Vcpu' has no member named 'cpu__DOT__cpu_top__DOT__prev_resume_requested1'
+  130 |     cpu->cpu__DOT__cpu_top__DOT__prev_resume_requested1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../iana_cpu.cpp:131:10: error: 'class Vcpu' has no member named 'cpu__DOT__cpu_top__DOT__prev_resume_requested2'
+  131 |     cpu->cpu__DOT__cpu_top__DOT__prev_resume_requested2
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../iana_cpu.cpp: In member function 'void IanaCPU::print_pc(int)':
+../iana_cpu.cpp:156:18: error: 'class Vcpu' has no member named 'cpu__DOT__cpu_top__DOT__next_PC_prev'
+  156 |   int pc2 = cpu->cpu__DOT__cpu_top__DOT__next_PC_prev;
+      |                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../iana_cpu.cpp: In member function 'void IanaCPU::exec_one_step()':
+../iana_cpu.cpp:169:29: error: 'class Vcpu' has no member named 'cpu__DOT__cpu_top__DOT__imem__DOT__mem'
+  169 |     unsigned int *a = (cpu->cpu__DOT__cpu_top__DOT__imem__DOT__mem);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../iana_cpu.cpp: In member function 'int IanaCPU::ReadData(int)':
+../iana_cpu.cpp:208:15: error: 'class Vcpu' has no member named 'cpu__DOT__cpu_top__DOT__dmem_0__DOT__mem'
+  208 |         (cpu->cpu__DOT__cpu_top__DOT__dmem_0__DOT__mem),
+      |               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../iana_cpu.cpp:209:15: error: 'class Vcpu' has no member named 'cpu__DOT__cpu_top__DOT__dmem_1__DOT__mem'
+  209 |         (cpu->cpu__DOT__cpu_top__DOT__dmem_1__DOT__mem),
+      |               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../iana_cpu.cpp:210:15: error: 'class Vcpu' has no member named 'cpu__DOT__cpu_top__DOT__dmem_2__DOT__mem'
+  210 |         (cpu->cpu__DOT__cpu_top__DOT__dmem_2__DOT__mem),
+      |               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../iana_cpu.cpp:211:15: error: 'class Vcpu' has no member named 'cpu__DOT__cpu_top__DOT__dmem_3__DOT__mem'
+  211 |         (cpu->cpu__DOT__cpu_top__DOT__dmem_3__DOT__mem)};
+      |               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../iana_cpu.cpp: In member function 'void IanaCPU::WriteData(int, int)':
+../iana_cpu.cpp:224:15: error: 'class Vcpu' has no member named 'cpu__DOT__cpu_top__DOT__dmem_0__DOT__mem'
+  224 |         (cpu->cpu__DOT__cpu_top__DOT__dmem_0__DOT__mem),
+      |               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../iana_cpu.cpp:225:15: error: 'class Vcpu' has no member named 'cpu__DOT__cpu_top__DOT__dmem_1__DOT__mem'
+  225 |         (cpu->cpu__DOT__cpu_top__DOT__dmem_1__DOT__mem),
+      |               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../iana_cpu.cpp:226:15: error: 'class Vcpu' has no member named 'cpu__DOT__cpu_top__DOT__dmem_2__DOT__mem'
+  226 |         (cpu->cpu__DOT__cpu_top__DOT__dmem_2__DOT__mem),
+      |               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../iana_cpu.cpp:227:15: error: 'class Vcpu' has no member named 'cpu__DOT__cpu_top__DOT__dmem_3__DOT__mem'
+  227 |         (cpu->cpu__DOT__cpu_top__DOT__dmem_3__DOT__mem)};
+      |               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../iana_cpu.cpp: In member function 'int IanaCPU::ReadCode(int)':
+../iana_cpu.cpp:239:27: error: 'class Vcpu' has no member named 'cpu__DOT__cpu_top__DOT__imem__DOT__mem'
+  239 |   unsigned int *a = (cpu->cpu__DOT__cpu_top__DOT__imem__DOT__mem);
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../iana_cpu.cpp: In member function 'void IanaCPU::WriteCode(int, int)':
+../iana_cpu.cpp:245:27: error: 'class Vcpu' has no member named 'cpu__DOT__cpu_top__DOT__imem__DOT__mem'
+  245 |   unsigned int *a = (cpu->cpu__DOT__cpu_top__DOT__imem__DOT__mem);
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../iana_cpu.cpp: In member function 'int IanaCPU::ReadRegister(int)':
+../iana_cpu.cpp:254:28: error: 'class Vcpu' has no member named 'cpu__DOT__cpu_top__DOT__regfile_0__DOT__regfile'
+  254 |     unsigned int *a = cpu->cpu__DOT__cpu_top__DOT__regfile_0__DOT__regfile;
+      |                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../iana_cpu.cpp: In member function 'void IanaCPU::WriteRegister(int, int)':
+../iana_cpu.cpp:262:28: error: 'class Vcpu' has no member named 'cpu__DOT__cpu_top__DOT__regfile_0__DOT__regfile'
+  262 |     unsigned int *a = cpu->cpu__DOT__cpu_top__DOT__regfile_0__DOT__regfile;
+      |                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../iana_cpu.cpp: In member function 'int IanaCPU::ReadPC()':
+../iana_cpu.cpp:269:15: error: 'class Vcpu' has no member named 'cpu__DOT__cpu_top__DOT__PC'
+  269 |   return cpu->cpu__DOT__cpu_top__DOT__PC;
+      |               ^~~~~~~~~~~~~~~~~~~~~~~~~~
+../iana_cpu.cpp: In member function 'void IanaCPU::WritePC(int)':
+../iana_cpu.cpp:274:8: error: 'class Vcpu' has no member named 'cpu__DOT__cpu_top__DOT__PC'
+  274 |   cpu->cpu__DOT__cpu_top__DOT__PC = data;
+      |        ^~~~~~~~~~~~~~~~~~~~~~~~~~
+../iana_cpu.cpp:275:8: error: 'class Vcpu' has no member named 'cpu__DOT__cpu_top__DOT__next_PC_prev'
+  275 |   cpu->cpu__DOT__cpu_top__DOT__next_PC_prev = data;
+      |        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+make[1]: *** [Vcpu.mk:63: iana_cpu.o] Error 1
+make[1]: Leaving directory '/root/src/verilator/obj_dir'
+make: *** [Makefile:7: iana_serv] Error 2
