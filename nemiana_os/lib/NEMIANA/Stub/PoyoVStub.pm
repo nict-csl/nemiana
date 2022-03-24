@@ -47,7 +47,6 @@ sub load_program{
 
 sub kill{
     my ($self) = @_;
-
     $self->close_poyov_server();
 }
 
@@ -79,13 +78,18 @@ sub open_poyov_server {
 sub close_poyov_server {
     my ($self) = @_;
 
+    print STDERR "KILL1:\n";
     $self->exit_cpu();
-
+    print STDERR "KILL2:\n";
     my $fh = $self->{poyov_fh};
     return if(!defined $fh);
+    print STDERR "KILL3 $fh:\n";
     print $fh "quit\n";
-    close $fh if(defined $fh);
+    print STDERR "KILL4:\n";
+    #close $fh if(defined $fh);
+    print STDERR "KILL5:\n";
     delete $self->{poyov_fh};
+    print STDERR "KILL6:\n";
 }
 
 sub connect {
@@ -265,6 +269,11 @@ sub set_reg {
     my $req=HTTP::Request->new(POST=>$self->{target_url}->{write});
     $req->content($str);
     my $response = $self->{ua}->request($req);
+}
+sub set_register {
+    my ($self, $reg_num, $val)=@_;
+
+    return $self->set_reg($reg_num, $val);
 }
 
 sub set_memory {
