@@ -90,8 +90,9 @@ STEP 3. ターゲットプラットフォームの実行・デバッグ環境の
 注：NEMIANAでは，2でコンパイルした共通のバイナリを，異なるプラットフォー
 ム上で実行しマイグレーションします．
 
-  順に事前準備の手順を説明します．
 
+ これらの事前準備をUbuntu20.04LTSに組み込んだDockerイメージを作成する
+DockerFileを用意しているので，これを利用するのが簡単だと思います．
 
 ### STEP 1. パッケージとPerlライブラリのインストール
 
@@ -242,18 +243,23 @@ gdbでアクセスすることが可能です．
 
 ````
 cd sample
-make make migration2 &
+make migration2 &
 pushd ~/target/sample1
 make gdb
 ````
 
 
-
-
 ## Docker イメージの使い方
 
+以下は評価プログラムを動かす例です．"/home/foo/this_repository"は，こ
+のリポジトリをcloneしたパスに変更して下さい．
+
 ````
-docker run -it -v /home/foo/thi_repository:/root/src neminia
+cd /home/foo/this_repository/docker
+make               # Dockerfileからdockerイメージを生成，かなり時間がかかる．
+docker run -it  -v /home/foo/this_repository:/root/src nemiana_example
+cd /root/src/eval  # dockerコンテナの中のシェルで実行される
+make eval1_1       # dockerコンテナの中で，評価プログラムを実行
 ````
 
 ## 評価
