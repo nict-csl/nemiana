@@ -301,8 +301,10 @@ sub get_memory {
 sub set_str {
     my ($self, $str) = @_;
 
+    print "Processor::set_str($self,", Dumper $str,")\n";
+    
     if(defined $self->{client}){
-	$self->{client}->set_str($str);
+	$self->{client}->set_str($str, $self->{processor});
     }
     
     if(defined $self->{processor}){
@@ -485,6 +487,11 @@ sub handle_post_callback {
 	}
     }
     return (0, $str);
+}
+
+sub set_fd {
+    my ($self, $fd, $fh) = @_;
+    return $self->{syscall}->set_fd($fd, $fh);
 }
 
 1;

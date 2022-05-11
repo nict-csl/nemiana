@@ -88,13 +88,28 @@ sub set_register{
 }
 
 sub set_str{
-    my ($self, $str) =@_;
-    
+    my ($self, $str, $processor) =@_;
+    print "GDBClient::set_str($self,", Dumper $str,")\n";
     foreach my $num (keys %{$str->{reg}}){
 	$self->set_register($num, $str->{reg}->{$num});
     }
     foreach my $addr (keys %{$str->{memory}}){
 	$self->set_memory($addr, $str->{memory}->{$addr});
+    }
+
+    my %word_val;
+    foreach my $addr (keys %{$str->{memory}}){
+	my $bit     = $addr & 3;
+	my $al_addr = $addr - $bit;
+	
+	if(!exists $word_val{$al_addr}){
+	    $word_val{$al_addr} = $processor->get_memory_word($al_addr);
+	}
+	$word_val{$al_addr} += $str->{memory}->{$addr}<<($bit*8);
+    }
+
+    foreach my $addr (keys %word_val){
+	$self->set_memory_word($addr, $word_val{$addr});
     }
 }
 
@@ -118,6 +133,11 @@ sub get_memory{
 sub set_memory{
     my $self = shift @_;
     return $self->{gdbrsp}->set_memory(@_);
+}
+
+sub set_memory_word{
+    my $self = shift @_;
+    return $self->{gdbrsp}->set_memory_word(@_);
 }
 
 sub step {

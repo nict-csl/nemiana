@@ -64,6 +64,7 @@ sub get_fd{
 
 sub set_fd{
     my ($self, $fd, $fh) = @_;
+    print STDERR "set_fd($self, $fd, $fh)\n";
     return $self->{fd_table}->[$fd] = $fh;
 }
 

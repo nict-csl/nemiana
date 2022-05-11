@@ -81,9 +81,10 @@ sub get_memory{
 }
 
 sub get_memory_word{
-    my ($self, $addr) = @_;
+    my ($self, $org_addr) = @_;
     my $val;
 
+    my $addr = int($org_addr/4)*4;
     $val = $self->{memory}->{$addr} +
 	($self->{memory}->{$addr+1}<<8) +
 	($self->{memory}->{$addr+2}<<16) +

@@ -1,129 +1,154 @@
 # NEMIANA(Cross-Platform Execution Migration for Debugging)
 
-## 概要
+**This document is an automatic translation of Readme_jp.md in Japanese.**
 
- NEMIANAは複数のプラットフォーム間でのソフトウエア解析を
-支援するプラットフォームです．以下の特徴があります．
+##Summary
 
-1. CPUからトレース情報を取得し，任意の時点での状態を復元します．
+NEMIANA was able to analyze software across platforms
+This support platform has the following features.
 
-2. 復元された状態を，別プラットフォーム上に書き込み実行を再開する(マイ
-グレーションする)ことができます．
+1. Obtain trace information from the CPU and restore the state at any point in time.
 
-この２つの機能により，不具合発生時点に戻った詳細な解析を可能とし，
-組み込み機器等のソフトウエアのデバッグを支援します．
+2. Write the restored state on another platform and resume execution.
+Graying).
 
-
- NEMIANAは，大きく２つのコンポーネントで構成されています．
-
-1. NEMIANA-CPU: プログラムを実行し，遷移情報を収集し，状態を書き込む.
-   
-2. NEMIANA-OS: 遷移情報から任意時点での状態を再現や，マイグレーションを実行する．
+These two functions enable detailed analysis back to the point of failure occurrence.
+It supports debugging software for embedded devices.
 
 
-NEMIANAでは，同じISAを備えるCPU間でのマイグレーションを提供します．同
-じISAに対して別の 実装形態によるNEMIANA-CPUが存在し，これらをまとめて
-プラットフォームと呼びます．本リポジトリでは，RISC-V 32bit基本命令セットを対
-象のISAとしたたプラットフォームに対して，以下の実装形態が提供されています．
+The NEMIANA is largely composed of two components.
 
-1. QEMUによる，ソフトウエアエミューレーション実装
+1. NEMIANA-CPU : Executes a program, collects transition information, and writes state.
 
-2. 評価ボードSiFiveによる，実機実装
-
-3. Xilinx FPGAボードZCU104による，FPGA実装
-
-4. VerilogシミュレータVerilatorによる，FPGAのシミュレーションによる実装
-
-注：3と4は同一のVerilogソースにより実装されたCPUコアを利用しています．
-
-  なお，2と3をテストするには，それぞれの(高価な)評価ボードが必要ですし，
-それら評価ボードに関する知識も必要です．  NEMIANAを試しで使うには，ソ
-フトウエアのみで実行やマイグレーションを実行できる，QEMUプラットフォー
-ムとVerilatorプラットフォームから初めるのが良いと思います．
+2. NEMIANA-OS : To reproduce a state at an arbitrary point in time from transition information and to execute migration.
 
 
-  現在のNEMIANA-OSは，Perlのライブラリと小規模なテストプログラムの集合
-として提供されます．一般的なOSやツールのような，洗練されたフロントエン
-ド(シェル，UI)はまだ提供されていません．従って，望む機能を使うには，
-Perlによるコーディングが必要となります．ただし，ほとんどの機能について
-は，テストプログラムが提供されているので，これらをそのまま使うか，修正
-することでNEMIANAの機能を利用できると考えています．
+NEMIANA provides migration between CPUs with the same ISA.
+There is an alternative implementation of ISA called NEMIANA CPU.
+In this repository, the RISC-V 32-bit basic instruction set is paired with the RISC-V 32-bit instruction set.
+The following implementations are provided for the ISA platform of the elephant.
 
-  本書では，NEMIANAのセットアップと使い方について説明します．
-NEMIANAの利用には，以下の知識が必要となります．
+1. Implementation of software emulation by QEMU
 
-1. Perlプログラミングの知識
+2. Real machine mounting by evaluation board SiFive
 
-2. RISC-VのC言語及びアセンブラによるベアメタルプログラミングとGNU
-Compile Collection(gcc, gdb含む)の知識
+3. FPGA implementation with Xilinx FPGA board ZCU104
 
-3. 各プラットフォームに対する知識
+4. Implementation by simulation of FPGA with Verilog simulator Verilator
 
-  特に，3に関しては，プラットフォームにおけるベアメタルプログラミング
-ができる環境を既に利用していることが前提となります．例えば，評価ボード
-SiFiveによる実機実装ではRISC-Vの組み込み向けgccとgdbを自前で用意し，
-USBケーブルで接続し，JTAGデバッグする環境を用意する必要があります．ま
-た，Xilinx FPGAボードZCU104によるFPGA実装を試すには，XilinxのFPGA開発
-ツールを使う必要があります．NEMIANAは各プラットフォームにて既に開発・
-デバッグしている技術者を支援するシステムなので，プラットフォームにおけ
-る開発・デバッグ環境についてはついては詳しく解説しませんので，プラット
-フォームに用意されたより詳細なドキュメントを参照してください．
+Note : 3 and 4 use a CPU core implemented by the same Verilog source.
 
-NEMIANAは，Ubuntu 20.04LTS上で動作を確認しています．本ドキュメントは，
-Ubuntu 20.04LTS上で実行することを前提として記述します．NEMIANA-OSを構成
-するPerlライブラリとプログラムはOSに非依存に実装されているため他のOS上
-でも実行できと思いますが，各プラットフォームの開発・デバッグ環境を用意
-するのは難しいと思います．
-
-## 事前準備
+Note that in order to test 2 and 3, we need each (expensive) evaluation board.
+You will also need to know about these boards. If you want to use the NEMIANA as a trial, you need to know how to use it.
+A QEMU platform that allows you to run and migrate only with your hardware
+It's a good idea to start with the Verifier platform.
 
 
- NEMIANAを利用するには，以下の事前準備をする必要があります．
+The current NEMIANA OS is a collection of Perl libraries and small test programs.
+A sophisticated front-end, like a common operating system or tool.
+(shell, UI) is not provided yet, so to use the desired functionality
+You will need to code in Perl, but for most of the features.
+Provides test programs, so you can use them as they are or modify them.
+By doing so, we can use the functions of NEMIANA.
+
+This manual describes how to set up and use NEMIANA.
+To use NEMIANA, you need to have the following knowledge.
+
+1. Knowledge of Perl programming
+
+2. Bare Metal Programming with RISC-V C and Assembler and GNU
+Knowledge of Compile Collection (including gcc and gdb)
+
+3. Knowledge of each platform
+
+In particular, for 3, bare metal programming on the platform
+For example, an evaluation board
+In the actual implementation by SiFive, gcc and gdb for RISC-V integration are prepared by itself.
+It is necessary to connect it with a USB cable and prepare an environment for JTAG debugging.
+Xilinx FPGA development to try an FPGA implementation with Xilinx FPGA board ZCU104
+NEMIANA has already been developed on each platform.
+Because it is a system to support engineers who are debugging, it can be used on the platform.
+The development and debugging environment will not be described in detail.
+See the more detailed documentation provided in the form.
+
+NEMIANA has confirmed that it works on Ubuntu 20.04 LTS.
+Assuming you are running on Ubuntu 20.04 LTS. NEMIANA - Configure the OS
+Perl libraries and programs are implemented in an OS independent manner so that they can be run on other operating systems.
+However, I think it can be executed, but development and debugging environments for each platform are available.
+I think it's hard to do.
+
+##Contents of this repository
+
+Source code and data necessary for execution contained in this repository are written in the paper.
+We've refactored a lot of the code we implemented at リファク.
+As a result, the number of bugs is drastically reduced compared to the time when the paper was written, and the operation is stable.
+However, at the time of writing this paper
+Operation is different. Some functions are not yet implemented. Sequential implementation is followed.
+I would like to join you, so please wait patiently.
+
+Below is a description of the directory directly under the repository.
 
 
-STEP 1. パッケージとPerlライブラリのインストール
+- docker : for building docker images to make NEMIANA easier
+Contains Dockerfiles.
 
-STEP 2. ターゲットISA(RISC-V)のコンパイル環境の導入
+- eval : Contains the program used to evaluate the paper.
+- fpga : Contains the files used by the FPGA platform.
+- nemiana _ os : Contains the NEMIANA Perl library.
+- sample : Contains sample programs.
+- target : Contains the RISC-V program to be debugged.
+- verialtor : Includes a software simulation version of the FPGA platform with the Verilog simulator Verilator. You can experience the FPGA version without an FPGA board.
 
-STEP 3. ターゲットプラットフォームの実行・デバッグ環境の用意
 
-注：NEMIANAでは，2でコンパイルした共通のバイナリを，異なるプラットフォー
-ム上で実行しマイグレーションします．
+##Pre-Preparation
 
 
- これらの事前準備をUbuntu20.04LTSに組み込んだDockerイメージを作成する
-DockerFileを用意しているので，これを利用するのが簡単だと思います．
+To use the NEMIANA, you need to make the following preparations :
 
-### STEP 1. パッケージとPerlライブラリのインストール
 
-実行に必要となるパッケージを，以下のコマンドでインストールします．
+STEP1. Installing Packages and Perl Libraries
+
+STEP2. Target ISA (RISC-V) Compile Environment Deployment
+
+STEP3. Run the target platform and prepare the debug environment
+
+Note : In NEMIANA, the common binary compiled in 2 can be used for different platforms.
+US> Migration.
+
+
+Create a Docker image with these pre-requisites built into Ubuntu20.04 LTS
+We have a DockerFile, which should be easy to use.
+
+###STEP1. Installing Packages and Perl Libraries
+
+Install the packages required for execution with the following command :
 
 ````
 apt install build-essential
 apt install libwww-perl
 ````
 
-### STEP 2. ターゲットISA(RISC-V)のコンパイル環境の導入
+###STEP2. Target ISA (RISC-V) Compile Environment Deployment
 
-ターゲットバイナリのコンパイルとデバッグには，GCC(GNU Compile
-Collection)を用います．インターネット上では，プレビルドされたRISC-V向
-けのGCCが提供されていますが，ビルド時のオプションによる様々なバリエー
-ションがあります．NEMIANAで利用するISAは，RISC-V 32-bit 基本命令セット
-(RV32I)のみで構成されるバイナリを出力できるGCCが必要です．特に，以下の点に注
-意が必要です．
+Target binaries can be compiled and debugged using GCC (GNU Compile
+Collection). On the Internet, for pre-built RISC-V
+GCC is available, but with various options at build time.
+The ISA used in NEMIANA is a RISC-V 32-bit basic instruction set.
+You need a GCC that can output a binary consisting only of (RV32I). Note in particular :
+I need your will.
 
-- 圧縮命令(16bit命令セット)を含まないこと．
-- 浮動小数点演算命令を含まないこと．
-- アトミック処理命令を含まないこと．
-- 乗算，除算，剰余演算を含まないこと．
+- do not contain compression instructions (16 bit instruction set).
+- must not contain floating-point instructions.
+- Do not include atomic processing instructions.
+- Do not include multiplication, division, or remainder operations.
 
-  インターネットで配布されているGCCの中には，RV32imac(32bit基本命令セッ
-ト＋アトミック命令＋圧縮命令セット)のみを出力するGCCが配布されています
-が，これでコンパイルされたバイナリをNEMIANAで扱うことは(現状)できませ
-ん．
+Some GCC distributions on the Internet include RV32imac (32 bit basic instruction set
+Atomic instruction + compressed instruction set).
+However, it is not possible to use the binary compiled by this method in NEMIANA (at present).
+Hmm.
 
-  ここでは，RISC-Vコミュニティの公式リポジトリからソースを取得し，コンパ
-イルする場合の手順を示します．
+We get the source from the official repository of the RISC-V community.
+Here is how to do it.
 
 
 ````
@@ -133,79 +158,79 @@ git clone https://github.com/riscv/riscv-gnu-toolchain
 make
 ````
 
-makeには，かなり高速なマシンでも，数時間程度かかります．
+Making takes a few hours even on a fairly fast machine.
 
-makeが終わったら，正しくインストールされたかを確認するためにも，本リポジトリに含まれるサンプルプログラムを実際にコンパイルしてください．
-
-
-### STEP 3. 実装形態毎の実行・デバッグ環境の用意
-
-実装形態毎に，実行・デバッグ環境を用意します．NEMIANAでは，基本的に
-baremetalで実行されるバイナリを対象としたデバッグの支援を想定しており，
-NEMIANAの利用前に導入した環境にてbaremetalのバイナリをコンパイル，実行，
-デバッグができることを確認してください．
-
-ここでは，本リポジトリで対応している以下の実装形態における実行・デバッ
-グ環境について，最低限の情報を解説します．
-
-1. QEMUによる，ソフトウエアエミューレーション実装
-
-2. VerilogシミュレータVerilatorによる，FPGAのシミュレーションによる実装
-
-3. 評価ボードSiFiveによる，実機実装
-
-4. Xilinx FPGAボードZCU104による，FPGA実装
+After you finish making, compile the sample programs in this repository to make sure they are installed correctly.
 
 
-評価ボードSiFive及びXilinx FPGAボードZCU104による実行には，それそれ(高
-価な)対象のボードと専用の開発環境が必要となります．まずは，ソフトウェ
-アだけで完結するQEMUとVerilatorにて試されることをお勧めします．
+###STEP3. Preparation of Execution and Debug Environment for Each Implementation
+
+For each implementation type, an execution and debugging environment is prepared. In NEMIANA, basically
+It is intended to support debugging of binaries executed by baremetal.
+Compile and run baremetal binaries in the environment you installed before using NEMIANA.
+Make sure you can debug it.
+
+Here, execution and debugging in the following implementation forms supported by this repository
+This section explains the minimum information about the environment.
+
+1. Implementation of software emulation by QEMU
+
+2. Implementation by simulation of FPGA by Verilog simulator Verilator
+
+3. Real machine mounting by evaluation board SiFive
+
+4. FPGA implementation with Xilinx FPGA board ZCU104
 
 
-####  実装形態1. QEMUによる，ソフトウエアエミューレーション実装
+For execution by the evaluation boards SiFive and Xilinx FPGA board ZCU104, there are two types of FPGA boards :
+Expensive) The target board and its own development environment are required.
+I recommend that you try it with QEMU and Verifier.
 
-QEMUのインストールは，
+
+####Implementation 1. Software emulation implementation by QEMU
+
+Installation of QEMU
 ````
 apt install qemu-system-misc
 ````
 
 
-#### 実装形態2. VerilogシミュレータVerilatorによる，FPGAのシミュレーションによる実装
+####Implementation 2. Implementation by simulation of FPGA with Verilog simulator Verilator
 
-Verilatorは，以下のようにしてインストールします．
+To install the Verifier, do the following :
 ````
 sudo apt install verilator
 ````
 
-Verilatorは，Ubuntu20.04のデフォルトでインストールされるVerilator
-4.028を使って下さい．最新の4.219ではインタフェースが変更されており，動
-作しないことを確認しています.
+The Verifier is installed by default in Ubuntu20.04.
+Use 4.028. In the latest 4.219, the interface has been changed.
+We are making sure that we do not make it.
 
 
-#### 実装形態3. QEMUによる，評価ボードSiFiveによる，実機実装
+####Implementation Form 3. Real Machine Implementation by SiFive Evaluation Board with QEMU
 
-#### 実装形態4. Xilinx FPGAボードZCU104による，FPGA実装
+####Implementation 4. Xilinx FPGA board ZCU104, FPGA implementation
 
-## 試しにNEMIANAを利用する
-
-
-NEMIANAの利用の仕方は以下となります．
-
-1. テスト用ターゲットソースをビルドする
-
-2. NEMIANA-OSを実行する
-
-3. GDBを接続し，デバッグしてみる．
-
-4. マイグレーションし，マイグレーション先にGDBで接続する．
-
-試しに利用するには，"sample"ディレクトリにある
-サンプルプログラムを利用すると良いでしょう．
-
-以下順に説明します．
+##Try NEMIANA
 
 
-### QEMU版の実行
+How to use the NEMIANA is as follows.
+
+1. Build the test target source
+
+2. NEMIANA - Running the OS
+
+3. Connect and debug the GDB.
+
+4. Migrate and connect to the destination via GDB.
+
+To try it out, you can find it in the "sample" directory.
+You can use the sample program.
+
+This is explained in the following order.
+
+
+###Running the QEMU Edition
 
 ````
 cd sample
@@ -213,58 +238,52 @@ make qemu_gdb &
 pushd ~/target/sample1
 make gdb
 ````
-でgdbが起動し，再現されたCPU状態に
-gdbでアクセスすることが可能です．
+Starts gdb and returns the CPU state to the
+You can access it with gdb.
 
 
-### Verilator版の実行
+###Running the Verifier
 ````
 cd sample
 make qemu_verilator &
 pushd ~/target/sample1
 make gdb
 ````
-でgdbが起動し，再現されたCPU状態に
-gdbでアクセスすることが可能です．
+Starts gdb and returns the CPU state to the
+You can access it with gdb.
 
-### マイグレーションの実行
-
+###Running the Migration
+cd sample
 ````
 cd sample
 make make migration1 &
 pushd ~/target/sample1
 make gdb
 ````
-でgdbが起動し，マイグレーションされたCPU状態に
-gdbでアクセスすることが可能です．
-バグのため，stepコマンドで無限ループが発生し，
-応答が返ってこなくなるので，siコマンドを
-実行して下さい．
-
+Starts gdb and puts it in the migrated CPU state
+You can access it with gdb.
+A bug caused an infinite loop in the step command.
+Since no response is returned, the si command
+Please execute it.
+cd sample
 ````
 cd sample
 make migration2 &
 pushd ~/target/sample1
 make gdb
 ````
+##Using the Docker Image
 
-
-## Docker イメージの使い方
-
-以下は評価プログラムを動かす例です．"/home/foo/this_repository"は，こ
-のリポジトリをcloneしたパスに変更して下さい．
-
+##Using the Docker Image
+Change the repository to the cloned path.
+Here is an example of how to run an evaluation program : "/ home/foo/this _ repository"
+Change the repository to the cloned path.
+cd /home/foo/this_repository/docker
 ````
 cd /home/foo/this_repository/docker
-make               # Dockerfileからdockerイメージを生成，かなり時間がかかる．
-docker run -it  -v /home/foo/this_repository:/root/src nemiana_example
-cd /root/src/eval  # dockerコンテナの中のシェルで実行される
-make eval1_1       # dockerコンテナの中で，評価プログラムを実行
+Generate docker image from make #Dockerfile, takes quite a while.
+docker run -it -v /home/foo/this_repository:/root/src nemiana_example
+Cd / root/src/eval #docker Run in a shell inside a container
+Make eval1 _ 1 #Run an evaluation program in a docker container
 ````
-
-## 評価
-
-## ディレクトリ構成
-
-## 著作権とライセンス
 

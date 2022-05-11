@@ -254,9 +254,29 @@ sub get_memory{
 
 sub set_memory{
     my ($client, $addr, $val) =  @_;
-    my $msg=sprintf("M%08x,4:%s",$addr, get_hex($val));
+
+    print "GDBRSP::set_memory($client, $addr, $val)\n";
+    
+#    my $msg=sprintf("M%08x,4:%s",$addr, get_hex($val));
+    my $msg=sprintf("M%08x,1:%s",$addr, get_hex($val));
+    print "GDBRSP::set_memory:$msg\n";
     my  $rep = send_msg($client, $msg);
     print "REP: $rep\n";
+    my $r_val = get_memory($client, $addr);
+    print "GDBRSP::set_memory   $addr,$r_val\n";
+}
+
+sub set_memory_word{
+    my ($client, $addr, $val) =  @_;
+
+    print "GDBRSP::set_memory_word($client, $addr, $val)\n";
+    
+    my $msg=sprintf("M%08x,4:%s",$addr, get_hex($val));
+    print "GDBRSP::set_memory_word  $msg\n";
+    my  $rep = send_msg($client, $msg);
+    print "REP: $rep\n";
+    my $r_val = get_memory($client, $addr);
+    print "GDBRSP::set_memory_word   $addr,$r_val\n";
 }
 
 sub set_break_point{

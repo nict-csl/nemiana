@@ -19,7 +19,6 @@ HEX_CONVERTER = perl $(TOOLS_ROOT)/split.pl
 
 all: build lst 
 
-
 build: ${TARGET}.elf ${TARGET}.bin
 
 INCLUDE_ROOT=.

@@ -1,0 +1,4 @@
+This is string from IANA CPUThis is from host5..HTTP/1.0 200 OK
+Date: Wed, 15 Sep 2021 09:34:12 GMT
+Expires: -1
+Cache-Control: private, max-age=0

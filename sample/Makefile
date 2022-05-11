@@ -15,6 +15,12 @@ migration1:
 migration2:
 	perl ${FLAGS} migration_verilator_qemu.pl >log/log4.log 2>&1
 
+core1:
+	perl ${FLAGS} core_gdb.pl --outdir=res/test5 --target_dir=../target/sample3 --verilator_dir=../verilator --infile=client_data0.txt --platform=QEMU    >log/log5.log 2>&1
+
+core2:
+	perl ${FLAGS} core_gdb.pl --outdir=res/test5 --target_dir=../target/sample3 --verilator_dir=../verilator --infile=client_data0.txt --platform=Poyov    >log/log5.log 2>&1
+
 clean:
 	rm -rf res log/*.log
 

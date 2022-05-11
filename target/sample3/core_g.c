@@ -25,16 +25,16 @@ typedef struct {
   int total_bytes_queued;
 } queue_t;
 
+volatile int read_buffer = 0;
 
-char read_byte() {
-  char buffer = 0;
-  int result = read(STDIN, &buffer, 1);
+int read_byte() {
+  int result = read(STDIN, &read_buffer, 1);
 
   if(result != 1) {
     exit(1);
   }
 
-  return buffer;
+  return read_buffer;
 }
 
 int read_number(char *terminator) {
@@ -42,7 +42,7 @@ int read_number(char *terminator) {
 
   while(1) {
     // Read a single byte
-    char buffer = read_byte();
+    int buffer = read_byte();
 
     // If it's not a valid byte, we're done (and we consume the terminator)
     if(buffer < '0' || buffer > '9') {
@@ -252,7 +252,8 @@ void queue_state_list(queue_t *queues, int long_output) {
 
 void start_test(queue_t *queues) {
   while(1) {
-    char command = read_byte(STDIN);
+    int cmd = read_byte(STDIN);
+    char command = cmd;
 
     if(command == '1') {
       print_waiting_jobs();
