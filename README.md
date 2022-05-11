@@ -2,7 +2,7 @@
 
 **This document is an automatic translation of Readme_jp.md in Japanese.**
 
-##Summary
+## Summary
 
 NEMIANA was able to analyze software across platforms
 This support platform has the following features.
@@ -77,10 +77,10 @@ Perl libraries and programs are implemented in an OS independent manner so that 
 However, I think it can be executed, but development and debugging environments for each platform are available.
 I think it's hard to do.
 
-##Contents of this repository
+## Contents of this repository
 
 Source code and data necessary for execution contained in this repository are written in the paper.
-We've refactored a lot of the code we implemented at リファク.
+We've refactored a lot of the code we implemented.
 As a result, the number of bugs is drastically reduced compared to the time when the paper was written, and the operation is stable.
 However, at the time of writing this paper
 Operation is different. Some functions are not yet implemented. Sequential implementation is followed.
@@ -100,7 +100,7 @@ Contains Dockerfiles.
 - verialtor : Includes a software simulation version of the FPGA platform with the Verilog simulator Verilator. You can experience the FPGA version without an FPGA board.
 
 
-##Pre-Preparation
+## Pre-Preparation
 
 
 To use the NEMIANA, you need to make the following preparations :
@@ -119,7 +119,7 @@ US> Migration.
 Create a Docker image with these pre-requisites built into Ubuntu20.04 LTS
 We have a DockerFile, which should be easy to use.
 
-###STEP1. Installing Packages and Perl Libraries
+### STEP1. Installing Packages and Perl Libraries
 
 Install the packages required for execution with the following command :
 
@@ -128,7 +128,7 @@ apt install build-essential
 apt install libwww-perl
 ````
 
-###STEP2. Target ISA (RISC-V) Compile Environment Deployment
+### STEP2. Target ISA (RISC-V) Compile Environment Deployment
 
 Target binaries can be compiled and debugged using GCC (GNU Compile
 Collection). On the Internet, for pre-built RISC-V
@@ -163,7 +163,7 @@ Making takes a few hours even on a fairly fast machine.
 After you finish making, compile the sample programs in this repository to make sure they are installed correctly.
 
 
-###STEP3. Preparation of Execution and Debug Environment for Each Implementation
+### STEP3. Preparation of Execution and Debug Environment for Each Implementation
 
 For each implementation type, an execution and debugging environment is prepared. In NEMIANA, basically
 It is intended to support debugging of binaries executed by baremetal.
@@ -187,7 +187,7 @@ Expensive) The target board and its own development environment are required.
 I recommend that you try it with QEMU and Verifier.
 
 
-####Implementation 1. Software emulation implementation by QEMU
+#### Implementation 1. Software emulation implementation by QEMU
 
 Installation of QEMU
 ````
@@ -195,7 +195,7 @@ apt install qemu-system-misc
 ````
 
 
-####Implementation 2. Implementation by simulation of FPGA with Verilog simulator Verilator
+#### Implementation 2. Implementation by simulation of FPGA with Verilog simulator Verilator
 
 To install the Verifier, do the following :
 ````
@@ -207,11 +207,11 @@ Use 4.028. In the latest 4.219, the interface has been changed.
 We are making sure that we do not make it.
 
 
-####Implementation Form 3. Real Machine Implementation by SiFive Evaluation Board with QEMU
+#### Implementation Form 3. Real Machine Implementation by SiFive Evaluation Board with QEMU
 
-####Implementation 4. Xilinx FPGA board ZCU104, FPGA implementation
+#### Implementation 4. Xilinx FPGA board ZCU104, FPGA implementation
 
-##Try NEMIANA
+## Try NEMIANA
 
 
 How to use the NEMIANA is as follows.
@@ -230,7 +230,7 @@ You can use the sample program.
 This is explained in the following order.
 
 
-###Running the QEMU Edition
+### Running the QEMU Edition
 
 ````
 cd sample
@@ -242,7 +242,7 @@ Starts gdb and returns the CPU state to the
 You can access it with gdb.
 
 
-###Running the Verifier
+### Running the Verifier
 ````
 cd sample
 make qemu_verilator &
@@ -252,7 +252,7 @@ make gdb
 Starts gdb and returns the CPU state to the
 You can access it with gdb.
 
-###Running the Migration
+### Running the Migration
 cd sample
 ````
 cd sample
@@ -272,9 +272,9 @@ make migration2 &
 pushd ~/target/sample1
 make gdb
 ````
-##Using the Docker Image
+## Using the Docker Image
 
-##Using the Docker Image
+## Using the Docker Image
 Change the repository to the cloned path.
 Here is an example of how to run an evaluation program : "/ home/foo/this _ repository"
 Change the repository to the cloned path.
@@ -284,6 +284,6 @@ cd /home/foo/this_repository/docker
 Generate docker image from make #Dockerfile, takes quite a while.
 docker run -it -v /home/foo/this_repository:/root/src nemiana_example
 Cd / root/src/eval #docker Run in a shell inside a container
-Make eval1 _ 1 #Run an evaluation program in a docker container
+Make eval1 _ 1 # Run an evaluation program in a docker container
 ````
 
