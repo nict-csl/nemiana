@@ -177,9 +177,9 @@ This section explains the minimum information about the environment.
 
 2. Implementation by simulation of FPGA by Verilog simulator Verilator
 
-3. Real machine mounting by evaluation board SiFive
+3. FPGA implementation with Xilinx FPGA board ZCU104
 
-4. FPGA implementation with Xilinx FPGA board ZCU104
+4. Real circuit board with evaluation board SiFive
 
 
 For execution by the evaluation boards SiFive and Xilinx FPGA board ZCU104, there are two types of FPGA boards :
@@ -187,7 +187,7 @@ Expensive) The target board and its own development environment are required.
 I recommend that you try it with QEMU and Verifier.
 
 
-#### Implementation 1. Software emulation implementation by QEMU
+#### Platform: Software emulation implementation by QEMU
 
 Installation of QEMU
 ````
@@ -195,7 +195,7 @@ apt install qemu-system-misc
 ````
 
 
-#### Implementation 2. Implementation by simulation of FPGA with Verilog simulator Verilator
+#### Platform :  Implementation by simulation of FPGA with Verilog simulator Verilator
 
 To install the Verifier, do the following :
 ````
@@ -206,10 +206,41 @@ The Verifier is installed by default in Ubuntu20.04.
 Use 4.028. In the latest 4.219, the interface has been changed.
 We are making sure that we do not make it.
 
+#### Platform:Xilinx FPGA board ZCU104, FPGA implementation
 
-#### Implementation Form 3. Real Machine Implementation by SiFive Evaluation Board with QEMU
+To run on ZCU104, you need Pynq, a Linux distribution running on an FPGA.
 
-#### Implementation 4. Xilinx FPGA board ZCU104, FPGA implementation
+http://www.pynq.io/
+
+The preparation procedure is as follows.
+
+
+1. Download the SD card image from the Pynq page, write it on the SD card and start it.
+
+2. Change the hostname to "iana".
+
+3. Write all files contained in the fpga directory of this repository into the home directory.
+
+````
+scp -r fpga iana.local:/home/xilinx
+````
+
+Before running the example program, log into iana. NEMIANA and run the fpga version of Local-Bridge-Server.
+
+
+````
+ssh iana.local
+cd fpga
+sudo python3 serv.py design_1_sample1.bit >aaa.log
+````
+
+To execute the second target program dhystone, specify design _ 1 _ sample2. bit, and to execute the third target program dhystone, specify design _ 1 _ sample3. bit as the first argument.
+
+
+
+#### Platform: Real circuit board with evaluation board SiFive
+
+
 
 ## Try NEMIANA
 

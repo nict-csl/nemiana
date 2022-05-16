@@ -9,7 +9,10 @@ from pynq import allocate # 利用可能な領域を確保するメソッドを�
 
 port_num = 5678
 
-base = Overlay("./design_1.bit")
+
+bit_file = "./design_1.bit"
+
+base = Overlay(bit_file)
 dma = base.axi_dma_0 # AXI DMA を操作するハンドラ
 mmio0 = MMIO(base_addr = base.ip_dict['axi_gpio_0']['phys_addr'], length = 0x1000, debug = True)
 mmio1 = MMIO(base_addr = base.ip_dict['axi_gpio_1']['phys_addr'], length = 0x1000, debug = True)
@@ -218,7 +221,10 @@ def main_loop() :
         task(clients)
 
 if len(sys.argv)>2:
-    port_num = int(sys.argv[1])
+    bit_file = int(sys.argv[1])
+
+if len(sys.argv)>3:
+    port_num = int(sys.argv[2])
     
 reset()
 main_loop()

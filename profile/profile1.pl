@@ -20,7 +20,7 @@ sub get_profile {
 	    writer=>'/usr/bin/JLinkExe',
 	    poyov_server=>{
 		dir=>'/home/xilinx/fpga',
-		#	    program=>"ssh iana.local 'cd /home/xilinx/fpga;sudo python3 serv.py>aaa.log'",
+#		program=>"ssh iana.local 'cd /home/xilinx/fpga;sudo python3 serv.py>aaa.log'",
 		program=>"cat>aaa.log",
 		addr=>'iana.local',
 		port=>'5678'
