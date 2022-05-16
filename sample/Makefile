@@ -21,6 +21,13 @@ core1:
 core2:
 	perl ${FLAGS} core_gdb.pl --outdir=res/test5 --target_dir=../target/sample3 --verilator_dir=../verilator --infile=client_data0.txt --platform=Poyov    >log/log5.log 2>&1
 
+
+filesys:
+	ln -s ../eval/chap4/filesys .
+
+xilinx_gdb: filesys
+	perl ${FLAGS} fpga_gdb.pl >log/log6.log 2>&1
+
 clean:
 	rm -rf res log/*.log
 

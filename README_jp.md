@@ -175,9 +175,9 @@ NEMIANAの利用前に導入した環境にてbaremetalのバイナリをコン�
 
 2. VerilogシミュレータVerilatorによる，FPGAのシミュレーションによる実装
 
-3. 評価ボードSiFiveによる，実機実装
+3. Xilinx FPGAボードZCU104による，FPGA実装
 
-4. Xilinx FPGAボードZCU104による，FPGA実装
+4. 評価ボードSiFiveによる，実機実装
 
 
 評価ボードSiFive及びXilinx FPGAボードZCU104による実行には，それそれ(高
@@ -205,9 +205,47 @@ Verilatorは，Ubuntu20.04のデフォルトでインストールされるVerila
 作しないことを確認しています.
 
 
-#### 実装形態3. QEMUによる，評価ボードSiFiveによる，実機実装
+#### 実装形態3. Xilinx FPGAボードZCU104による，FPGA実装
 
-#### 実装形態4. Xilinx FPGAボードZCU104による，FPGA実装
+
+ZCU104で実行するには，FPGA上で動作するLinuxディストリビューション
+Pynqが必要です．
+
+http://www.pynq.io/
+
+事前準備の手順は，以下の通りです．
+
+
+1. PynqのページからSDカードイメージをダウンロードし，
+  SDカードに書き込み起動する．
+
+2. ホスト名を"iana"に変更する．
+
+3. 本リポジトリのfpgaディレクトリに含まれる
+ファイルを全て，ホームディレクトリに書き込む．
+
+````
+scp -r fpga iana.local:/home/xilinx
+````
+
+サンプルプログラムを実行する前に，iana.localに
+ログインし，fpga版のNEMIANA-Bridge-Serverを実行します．
+
+
+````
+ssh iana.local
+cd fpga
+sudo python3 serv.py design_1_sample1.bit >aaa.log
+```` 
+
+なお，2番目のターゲットプログラムdhystoneを実行する時は
+design_1_sample2.bitを，3番目のターゲットプログラムdhystoneを実行する
+時はdesign_1_sample3.bitを，第一引数に指定します．
+
+
+
+#### 実装形態4. QEMUによる，評価ボードSiFiveによる，実機実装
+
 
 ## 試しにNEMIANAを利用する
 
