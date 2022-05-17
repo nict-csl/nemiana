@@ -28,6 +28,9 @@ filesys:
 xilinx_gdb: filesys
 	perl ${FLAGS} fpga_gdb.pl >log/log6.log 2>&1
 
+hifive_gdb: filesys
+	perl ${FLAGS} hifive.pl >log/log7.log 2>&1
+
 clean:
 	rm -rf res log/*.log
 

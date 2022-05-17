@@ -208,6 +208,10 @@ Verilatorは，Ubuntu20.04のデフォルトでインストールされるVerila
 #### 実装形態3. Xilinx FPGAボードZCU104による，FPGA実装
 
 
+FPGA実装では，Xilinx社のFPGAボード上にRISC-Vコアを実装して実行します．
+https://www.xilinx.com/products/boards-and-kits/zcu104.html
+
+
 ZCU104で実行するには，FPGA上で動作するLinuxディストリビューション
 Pynqが必要です．
 
@@ -246,6 +250,25 @@ design_1_sample2.bitを，3番目のターゲットプログラムdhystoneを実
 
 #### 実装形態4. QEMUによる，評価ボードSiFiveによる，実機実装
 
+
+
+実機の基板としてSiFive社のHiFive1 Rev Bボードを使います．
+https://www.sifive.com/boards/hifive1-rev-b
+
+HiFive1 Rev Bに対してNEMIANAを使うには，GDBプロトコルでCPUコアに接続するために，J-Link GDB Serverを使います．
+
+https://www.segger.com/products/debug-probes/j-link/tools/j-link-gdb-server/about-j-lin\
+k-gdb-server/
+
+上記のページからダウンロードし，インストールしてください．
+
+HiFive1 Rev BボードをUSBに接続して，以下のように実行してください．
+````
+cd sample
+make hifive_gdb &
+cd ../target/sample1
+make gdb
+````
 
 ## 試しにNEMIANAを利用する
 
