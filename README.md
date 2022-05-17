@@ -179,7 +179,7 @@ This section explains the minimum information about the environment.
 
 3. FPGA implementation with Xilinx FPGA board ZCU104
 
-4. Real circuit board with evaluation board SiFive
+4. Real circuit board with evaluation board SiFive-Rev-B
 
 
 For execution by the evaluation boards SiFive and Xilinx FPGA board ZCU104, there are two types of FPGA boards :
@@ -197,6 +197,8 @@ apt install qemu-system-misc
 
 #### Platform :  Implementation by simulation of FPGA with Verilog simulator Verilator
 
+
+
 To install the Verifier, do the following :
 ````
 sudo apt install verilator
@@ -208,8 +210,10 @@ We are making sure that we do not make it.
 
 #### Platform:Xilinx FPGA board ZCU104, FPGA implementation
 
-To run on ZCU104, you need Pynq, a Linux distribution running on an FPGA.
+In the FPGA implementation, a RISC-V core is implemented on a Xilinx FPGA board.
+https://www.xilinx.com/products/boards-and-kits/zcu104.html
 
+To run on ZCU104, you need Pynq, a Linux distribution running on an FPGA.
 http://www.pynq.io/
 
 The preparation procedure is as follows.
@@ -238,9 +242,25 @@ To execute the second target program dhystone, specify design _ 1 _ sample2. bit
 
 
 
-#### Platform: Real circuit board with evaluation board SiFive
+#### Platform: Real circuit board with evaluation board SiFive HiFive-Rev-B
 
+HiFive1 Rev B board from SiFive is used for the actual circuit board.
+https://www.sifive.com/boards/hifive1-rev-b
 
+To use NEMIANA for HiFive1 Rev B, use the J-Link GDB Server to connect to the core using the GDB protocol.
+
+https://www.segger.com/products/debug-probes/j-link/tools/j-link-gdb-server/about-j-lin\
+k-gdb-server/
+
+Download it from the above page and install it.
+
+Connect the HiFive1 Rev B board to the USB port and run it as follows.
+````
+cd sample
+make hifive_gdb &
+cd ../target/sample1
+make gdb
+````
 
 ## Try NEMIANA
 
